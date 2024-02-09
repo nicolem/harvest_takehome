@@ -1,6 +1,14 @@
 class Api::V1::TimeEntriesController < ApplicationController
   def index
-    uri = URI("https://api.harvestapp.com/v2/time_entries?from=2024-02-01&to=2024-03-01")
+    uri = URI("https://api.harvestapp.com/v2/time_entries")
+
+    outgoing_params = {}
+    if params["start_date"].present? && params["end_date"].present?
+      outgoing_params["from"] = params["start_date"]
+      outgoing_params["to"] = params["end_date"]
+    end
+    outgoing_params["user_id"] = params["user_id"] if params["user_id"].present? && params["user_id"] != "null"
+    uri.query = URI.encode_www_form( outgoing_params )
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       request = Net::HTTP::Get.new uri
