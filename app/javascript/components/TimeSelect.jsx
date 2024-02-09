@@ -12,7 +12,7 @@ const TimeSelect = () => {
   ).toISOString().split('T')[0];
 
   return (
-    <div className="drop-down col-auto">
+    <div className="col-auto">
       <h3>Entries for {startDate} to {endDate}</h3>
     </div>
   );
